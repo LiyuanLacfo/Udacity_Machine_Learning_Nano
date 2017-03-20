@@ -20467,10 +20467,10 @@ YII=
 </li>
 <li><p>Let's discuss what the first four dimensions best represent in terms of customer spending.</p>
 <ul>
-<li>For the first principal component, it explaines about 50% of the total variance. The increase in <em>Milk</em>, <em>Grocery</em>, <em>Detergents_Paper</em> and <em>Delicatessen</em> and decrese in <em>Fresh</em> and <em>Frozen</em> can main represent the characteristic of customer.</li>
-<li>For the second principal component, it explains about 23% of the total variance. The decrese in <em>Detergents_Paper</em> and increse in other 5 features can also represent second most importance of difference in customers.</li>
-<li>For the third principal component, it explains about 10.5% of the total variance. The decrease in <em>Fresh</em>, <em>Grocery</em> and <em>Detergents_Paper</em> and increae in other 3 features can represent the 3rd most importance of difference.</li>
-<li>For the fourth principal component, it explains about 9.78% of the total variance. The decrease in <em>Frozen</em> and <em>Detergents_Paper</em> and increase in other 4 features can represent 4th most importance of the difference.</li>
+<li>For the first principal component, it explaines about 50% of the total variance. We can see that the weights on <em>Milk</em>, <em>Grocery</em> and <em>Detergents_Paper</em> are much larger than others' in abosolute value sense. So the customer who spends a lot on these 3 categories will positioned right on the first pca dimension axis. We can see from the last question that retailers spend a lot on these 3 categories.</li>
+<li>For the second principal component, it explains about 23% of the total variance. The weights on <em>Fresh</em>, <em>Frozen</em> and <em>Delicatessen</em> are much larger than others'. So the customers who spend a lot on these 3 categories will on the right of pca dimension2 axis.</li>
+<li>For the third principal component, it explains about 10.5% of the total variance. We can see that the <em>Fresh</em> and <em>Delicatessen</em> are much larger in absolute sense. The weight on <em>Fresh</em> is negative which means the decrease in <em>Fresh</em> will move to the right of dimension_3 axis. And the weight on <em>Delicatessen</em> is positive which means that the increase in <em>Delicatessen</em> will move to the right of dimension_3 axis. </li>
+<li>For the fourth principal component, it explains about 9.78% of the total variance. We can see that weights on <em>Frozen</em> and <em>Delicatessen</em> are much larger than others' in absolute sense. The decrease in <em>Frozen</em> will move to the right of dimension_4 axis and the increase in <em>Delicatessen</em> will move to the right of dimension_4 axis.</li>
 </ul>
 </li>
 </ol>
@@ -24123,7 +24123,11 @@ Sample point 2 predicted to be in Cluster 0
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <ul>
-<li><p>Similar to <strong>Question 8</strong>, I think <em>Segment 1</em> represents sample 0, <em>Segment 0</em> represents sample 1 and <em>Segment 0</em> represents sample 2.</p>
+<li><p>For sample 0, the spending on <em>Milk</em>, <em>Grocery</em> are above the average level of these 2 categories respectively. Altough <em>Detergent_Paper</em> spending is below the mean level, it is very close to the mean level. So I think <em>Segment 1</em> best respresents it.</p>
+</li>
+<li><p>For sample 1, spending on <em>Grocery</em> and <em>Detergent_Paper</em> are much smaller than mean levels. So I think <em>Segment 0</em> best represents it.</p>
+</li>
+<li><p>For sample 2, spending on <em>Milk</em>, <em>Grocery</em> and <em>Detergent_Paper</em> are much smaller than mean levels. So I think <em>Segment 0</em> best represents it.</p>
 </li>
 <li><p>From the results of code above, the predictions are consistent with the statements above.</p>
 </li>
