@@ -47,7 +47,7 @@ class LearningAgent(Agent):
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
         self.count += 1
-        self.epsilon = 1.0/self.count
+        self.epsilon = 1.0/np.sqrt(self.count)
         if testing:
             self.epsilon = 0
             self.alpha = 0
@@ -244,7 +244,7 @@ def run():
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
     #    * gamma   - discount factor
-    agent = env.create_agent(LearningAgent, learning=True, alpha=0.7, future=True, gamma=0.4)
+    agent = env.create_agent(LearningAgent, learning=True, alpha=0.7)
     
     ##############
     # Follow the driving agent
@@ -266,7 +266,7 @@ def run():
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(tolerance=1e-3, n_test=30)
+    sim.run(tolerance=(1.0/34), n_test=30)
 
 
 if __name__ == '__main__':
