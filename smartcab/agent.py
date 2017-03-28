@@ -83,21 +83,23 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-        key_value_pairs = self.Q[state]
-        result_list = sorted(key_value_pairs.items(), key=lambda x: x[1], reverse=True)
-        n = len(result_list)
-        cnt = 0
-        maxNum = result_list[0][1]
-        for i in range(n):
-            if result_list[i][1] == maxNum:
-                cnt += 1
-            else:
-                break
-        if cnt < 2:
-            maxQ = result_list[0][0]
-        else:
-            random_number = random.randint(0, cnt - 1)
-            maxQ = result_list[random_number][0]
+        maxQ = max(self.Q[state].values())
+
+        # key_value_pairs = self.Q[state]
+        # result_list = sorted(key_value_pairs.items(), key=lambda x: x[1], reverse=True)
+        # n = len(result_list)
+        # cnt = 0
+        # maxNum = result_list[0][1]
+        # for i in range(n):
+        #     if result_list[i][1] == maxNum:
+        #         cnt += 1
+        #     else:
+        #         break
+        # if cnt < 2:
+        #     maxQ = result_list[0][0]
+        # else:
+        #     random_number = random.randint(0, cnt - 1)
+        #     maxQ = result_list[random_number][0]
         return maxQ 
 
 
@@ -111,12 +113,13 @@ class LearningAgent(Agent):
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
         #The table is a dictionary of dictionary, for example, for state "green, left, right, forward", the dictionary is none: , left: , right: , forward: 
-        if state not in self.Q:
-            self.Q[state] = {}
-            self.Q[state][None] = 0
-            self.Q[state]["left"] = 0
-            self.Q[state]["right"] = 0
-            self.Q[state]["forward"] = 0
+        if self.learning:
+            if state not in self.Q:
+                self.Q[state] = {}
+                self.Q[state][None] = 0
+                self.Q[state]["left"] = 0
+                self.Q[state]["right"] = 0
+                self.Q[state]["forward"] = 0
         return
 
     def createPolicy(self, state):
@@ -140,21 +143,17 @@ class LearningAgent(Agent):
         # When not learning, choose a random action
         valid_actions_length = len(self.valid_actions)
         if not self.learning:
-            random_number = random.randint(1, valid_actions_length)
-            action = self.valid_actions[random_number - 1]
+            action = random.choice(self.valid_actions)
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
         else: 
             randnum = random.random()
             if randnum < self.epsilon:
                 self.is_action_random = True 
-                random_number = random.randint(1, valid_actions_length)
-                action = self.valid_actions[random_number - 1]
+                action = random.choice(self.valid_actions)
             else:
                 if self.Policy[state] == 2:
-                    self.is_action_random = True 
-                    random_number = random.randint(1, valid_actions_length)
-                    action = self.valid_actions[random_number - 1]
+                    action = random.choice(self.valid_actions)
                 else:
                     self.is_action_random = False
                     action = self.Policy[state]
@@ -182,7 +181,9 @@ class LearningAgent(Agent):
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         if self.learning:
             self.Q[state][action] = (1 - self.alpha) * self.Q[state][action] + self.alpha * reward
-            self.Policy[state] = self.get_maxQ(state)
+            maxQ = self.get_maxQ(state)
+            best_actions = [action for action in self.valid_actions if self.Q[state][action] == maxQ]
+            self.Policy[state] = random.choice(best_actions)
         return
     def learn_with_future(self, state, action, reward, next_state, max_action, final=False):
         """
@@ -244,7 +245,7 @@ def run():
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
     #    * gamma   - discount factor
-    agent = env.create_agent(LearningAgent, learning=True, alpha=0.7)
+    agent = env.create_agent(LearningAgent, learning=False, alpha=0.7)
     
     ##############
     # Follow the driving agent
@@ -259,14 +260,14 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, update_delay=0.05, log_metrics=True, optimized=True)
+    sim = Simulator(env, update_delay=0.05, log_metrics=True, optimized=False)
     
     ##############
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(tolerance=(1.0/34), n_test=30)
+    sim.run(tolerance=0.05, n_test=10)
 
 
 if __name__ == '__main__':
